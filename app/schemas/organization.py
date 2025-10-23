@@ -1,33 +1,21 @@
 from pydantic import BaseModel
-from typing import List
-from datetime import datetime
 
-from app.schemas.activity import ActivitySimple
+from app.schemas.activity import Activity
+from app.schemas.building import Building
 
-
-class OrganizationBase(BaseModel):
-    name: str
-
-
-class BuildingSimple(BaseModel):
-    id: int
-    address: str
-    latitude: float
-    longitude: float
-
-
-class Organization(OrganizationBase):
-    id: int
-    building: BuildingSimple
-    phone_numbers: List[str]
-    activities: List[ActivitySimple]
-    created_at: datetime
-    updated_at: datetime
+class OrganizationPhone(BaseModel):
+    phone_number: str
 
     class Config:
         from_attributes = True
 
 
-class OrganizationList(BaseModel):
-    items: List[Organization]
-    total: int
+class Organization(BaseModel):
+    id: int
+    name: str
+    building: Building
+    phone_numbers: list[OrganizationPhone]
+    activities: list[Activity]
+
+    class Config:
+        from_attributes = True
