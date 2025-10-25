@@ -11,7 +11,7 @@ router = APIRouter(prefix="/buildings")
 def search_buildings_in_radius(
     search: RadiusSearch,
     repo_factory: RepositoryFactory = Depends(get_repository_factory)
-):
+) -> list[dict[str, str]]:
     buildings = BuildingService.get_buildings_by_map_point_in_radius(
         search.latitude,
         search.longitude,

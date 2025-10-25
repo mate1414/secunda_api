@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
 from app.core.config import settings
+from app.core.middleware import add_middlewares
 from app.core.routers import add_routers
 
 from app.database import engine, Base
@@ -18,3 +19,4 @@ app = FastAPI(
 )
 
 add_routers(app)
+add_middlewares(app)

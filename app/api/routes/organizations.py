@@ -12,7 +12,7 @@ router = APIRouter(prefix="/organizations")
 def get_organization(
     organization_id: int,
     repo_factory: RepositoryFactory = Depends(get_repository_factory)
-):
+) -> dict[str, str]:
     organization = repo_factory.organization.get_one(organization_id)
 
     if not organization:
@@ -25,7 +25,7 @@ def get_organization(
 def get_organizations_by_building(
     building_id: int,
     repo_factory: RepositoryFactory = Depends(get_repository_factory)
-):
+) -> list[dict[str, str]]:
     organizations = repo_factory.organization.get_multi_by_building_id(building_id)
     if not organizations:
         raise HTTPException(status_code=404, detail="Not found")
@@ -40,7 +40,7 @@ def get_organizations_by_building(
 def get_organizations_in_radius(
     search: RadiusSearch,
     repo_factory: RepositoryFactory = Depends(get_repository_factory),
-):
+) -> list[dict[str, str]]:
     organizations = OrganizationService.get_organizations_by_map_point_in_radius(
         search.latitude,
         search.longitude,
@@ -61,7 +61,7 @@ def get_organizations_by_activity_recursive(
     activity_id: int,
     max_depth: int = Query(3, ge=1, le=10, description="Максимальная глубина вложенности"),
     repo_factory: RepositoryFactory = Depends(get_repository_factory)
-):
+) -> list[dict[str, str]]:
     organizations = repo_factory.organization.get_multi_by_activity_recursive(
         activity_id=activity_id,
         max_depth=max_depth,
